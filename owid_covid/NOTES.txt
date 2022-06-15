@@ -1,0 +1,15 @@
+Covid data from ourworldindata.org
+
+As of June 12, 2022, the data is updated daily.
+
+Webpage with download link:
+https://ourworldindata.org/covid-deaths
+
+Link to the data:
+https://covid.ourworldindata.org/data/owid-covid-data.csv
+
+TODO: Look at excess_mortality column.
+
+How to reimport data that was exported from SSMS as a script.
+sqlcmd -S DESKTOP-TJE92AD\SQLEXPRESS  -i data_as_script.sql
+
