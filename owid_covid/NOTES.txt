@@ -12,4 +12,3 @@ TODO: Look at excess_mortality column.
 
 How to reimport data that was exported from SSMS as a script.
 sqlcmd -S DESKTOP-TJE92AD\SQLEXPRESS  -i data_as_script.sql
-

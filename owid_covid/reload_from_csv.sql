@@ -72,7 +72,7 @@ CREATE TABLE [world_data].[dbo].[owid_covid_raw] (
 	[excess_mortality_cumulative_per_million] [nvarchar](50) NULL
 );
 BULK INSERT [world_data].[dbo].[owid_covid_raw]
-FROM 'C:\WORK\DATA_LIBRARY\world_data\owid_covid\owid-covid-data.csv'
+FROM 'C:\github\world_data\owid_covid\owid-covid-data.csv'  -- <<<<< YOU WILL HAVE TO CHANGE THIS PATH <<<<<
 WITH
 (
 		ROWTERMINATOR = '0x0a',  -- \n DID NOT WORK!!!
