@@ -27,10 +27,11 @@ We will look for interesting things happening in a country in a specific month. 
 ```
 USE [world_data]
 ```
+
 ## REPORTED NEW CASES
+Create a temp table with number of reported new cases vs population, monthly per country.
+
 ```
--- Create a temp table with number of reported new cases vs population
---  monthly per country.
 --  (Note: "Null value is eliminated by an aggregate or other SET operation." 
 --   is what we want to happen. And I think turning warnings off would be bad.)
 DROP TABLE IF EXISTS #monthly_cases;
@@ -47,10 +48,10 @@ WHERE [continent] IS NOT NULL   -- Eliminates non-countries like "Asia" or "High
 GROUP BY [location], year([date]), month([date]), datename(month, [date]);
 ```
 
+### Biggest Outbreaks
+Top 50 reported numbers of new cases for a country in one month, relative to population.
 
 ```
--- "Biggest Outbreaks"
--- Top 50 reported numbers of new cases for a country in one month, relative to population,
 SELECT TOP(50) 
   [Location] AS [Country],
   [Year],
@@ -114,8 +115,10 @@ ORDER BY [MonthlyNewCasesPerThousand] DESC;
 |Netherlands                    |2022|March    |87                |11.47                                 |
 |Andorra                        |2021|December |86                |11.68                                 |
 
+### Biggest Outbreaks in Large Countries
+Top 100 reported numbers of new cases for a country in one month, relative to population, but only for countries with at least ten million people.
+
 ```
--- Top 100 as above, but only for countries with at least ten million people
 SELECT TOP(100) 
   [Location] AS [Country],
   [Year],
@@ -231,8 +234,12 @@ ORDER BY [MonthlyNewCasesPerThousand] DESC;
 |Japan         |2022|February |18                |55.59                                 |
 
 ```
--- Next, look at months in calendar order, noting countries and months where at least fifty people in every thousand 
--- were reported as getting Covid during that month.
+
+### Outbreaks Over Time
+Next, we look at months in calendar order, noting countries and months where at least fifty people in every thousand 
+were reported as getting Covid during that month.
+```
+
 SELECT
   [Location] AS [Country],
   [Year],
@@ -376,7 +383,12 @@ ORDER BY [Year],[MonthNum], [MonthlyNewCasesPerThousand] DESC;
 |Australia                      |2022|May      |53                |18.97                                 |
 
 ```
--- As above, for countries with at least a ten million people.
+
+### Outbreaks Over Time: Large Countries
+Months in calendar order, noting countries and months where at least fifty people in every thousand 
+were reported as getting Covid during that month, for countries with at least a ten million people.
+
+```
 SELECT
   [Location] AS [Country],
   [Year],
@@ -580,7 +592,11 @@ ORDER BY [Year],[MonthNum], [MonthlyNewCasesPerThousand] DESC;
 |Australia         |2022|June     |14                |74.03                                 |
 
 ```
--- Same as above, but group the rows for each country together.
+
+### Outbreaks Over Time: Large Countries: Grouped by Country
+Same as above, but group the rows for each country together.
+
+```
 SELECT
   [Location] AS [Country],
   [Year],
@@ -783,8 +799,11 @@ ORDER BY [Country], [Year],[MonthNum], [MonthlyNewCasesPerThousand] DESC;
 |Vietnam           |2022|March    |62                |16.04                                 |
 |Vietnam           |2022|April    |11                |90.46                                 |
 
+
+### Countries with the Most "Hight Covid" Months
+Find countries with the most months during which more than 10 new cases were reported per thousand people
+
 ```
--- Find countries with the most months during which more than 10 new cases were reported per thousand people
 SELECT [Location], count(*) as [Months]
 FROM #monthly_cases
 WHERE [MonthlyNewCasesPerThousand] >= 10
@@ -856,7 +875,12 @@ ORDER BY [Months] DESC, [Location];
 |Spain                          |6     |
 
 ```
--- As above, for populations of at least ten million
+
+### Large Countries with the Most "Hight Covid" Months
+Find countries with the most months during which more than 10 new cases were reported per thousand people
+, for populations of at least ten million.
+
+```
 SELECT [Location], count(*) as [Months]
 FROM #monthly_cases
 WHERE ([MonthlyNewCasesPerThousand] >= 10) AND ([MonthlyPopulation] > 10000000)
@@ -884,10 +908,10 @@ ORDER BY [Months] DESC, [Location];
 |Spain         |6     |
 
 ## VACCINATIONS
+Create a temp table with monthly data per country,
+  and number of vaccinations vs population
 
 ```
--- Create a temp table with monthly data per country,
---   and number of vaccinations vs population
 DROP TABLE IF EXISTS #monthly_vac;
 SELECT 
   [location],
@@ -902,10 +926,10 @@ WHERE [continent] IS NOT NULL   -- Eliminates non-countries like "Asia" or "High
 GROUP BY [location], year([date]), month([date]), datename(month, [date]);
 ```
 
+### Biggest Vaccination Drives:
+Top 50 country+month with the largest number of vaccinations, relative to population.
 
 ```
--- Biggest Vaccination Drives:
--- Top 50 country+month with the largest number of vaccinations, relative to population
 SELECT TOP(50) 
   [Location] AS [Country],
   [Year],
@@ -969,8 +993,11 @@ ORDER BY [MonthlyNewVacPerThousand] DESC;
 |Germany           |2021|June     |302             |
 
 ```
--- Vaccination Drives Over Time:
--- In calendar order, display all countries+months with at least one person in every five getting a vaccination during that month.
+
+### Vaccination Drives Over Time
+In calendar order, display all countries+months with at least one person in every five getting a vaccination during that month.
+
+```
 SELECT [Location], [Year], [MonthName], round([MonthlyNewVacPerThousand], 0) AS [JabsPerThousandPeople]
 FROM #monthly_vac
 WHERE [MonthlyNewVacPerThousand] >= 200
@@ -1188,8 +1215,11 @@ ORDER BY [Year], [MonthNum], [Location];
 |Japan               |2022|March    |212                  |
 |Chile               |2022|May      |208                  |
 
+### Vaccination Drives Over Time: Large Countries
+In calendar order, display all countries+months with at least one person in every five getting a vaccination during that month,
+but only showing countries with population of ten million or more.
+
 ```
--- As above, only showing countries with population of ten million or more.
 SELECT [Location], [Year], [MonthName], round([MonthlyNewVacPerThousand], 0) AS [JabsPerThousandPeople]
 FROM #monthly_vac
 WHERE ([MonthlyNewVacPerThousand] >= 200) AND ([MonthlyPopulation] > 10000000)
@@ -1308,9 +1338,12 @@ ORDER BY [Year], [MonthNum], [Location];
 |Chile             |2022|May      |208                  |
 
 ```
--- "Most Heavily Vaccinated Countries"
--- Top 50 countries by average vaccinations per person over all time, 
---   rounded to 3 decimal places, for countries where data is available.
+
+### Most Heavily Vaccinated Countries
+Top 50 countries by average vaccinations per person over all time, 
+rounded to 3 decimal places, for countries where data is available.
+
+```
 SELECT TOP(50) [location], round(sum([MonthlyNewVacPerThousand])/1000, 3) AS [AverageJabsPerPerson]
 FROM #monthly_vac
 GROUP BY [location]
@@ -1372,7 +1405,13 @@ ORDER BY sum([MonthlyNewVacPerThousand]) DESC;
 |India               |1.343               |
 
 ```
--- As above, for countries with ten million people or more
+
+### Most Heavily Vaccinated Large Countries
+Top 50 countries by average vaccinations per person over all time, 
+rounded to 3 decimal places, for countries where data is available.
+Only look at countries with ten million people or more.
+
+```
 SELECT TOP(50) [location], round(sum([MonthlyNewVacPerThousand])/1000, 3) AS [AverageJabsPerPerson]
 FROM #monthly_vac
 WHERE [MonthlyPopulation] >= 10000000
@@ -1435,9 +1474,10 @@ ORDER BY sum([MonthlyNewVacPerThousand]) DESC;
 |Jordan            |0.415               |
 
 ## REPORTED NEW DEATHS
+Create a temp table with monthly data per country,
+  and count of deaths vs population
+
 ```
--- Create a temp table with monthly data per country,
---   and count of deaths vs population
 DROP TABLE IF EXISTS #monthly_deaths;
 SELECT 
   [location],
@@ -1453,8 +1493,10 @@ GROUP BY [location], year([date]), month([date]), datename(month, [date]);
 ```
 
 
+### Largest Numbers of Deaths, vs Population
+What were the largest number of covid deaths in one month and one country, relative to population?
+
 ```
--- What were the largest number of covid deaths in one month and one country, relative to population?
 SELECT TOP(50) 
   [Location] AS [Country],
   [Year],
@@ -1518,8 +1560,11 @@ ORDER BY [MonthlyNewDeathsPerMillion] DESC;
 |Bermuda               |2021|October  |467                   |
 
 ```
--- Months with High Death Rates:
--- In calendar order, show when a country had at least 300 deaths per million population. (Or at least one death per 3333 people.)
+
+### Months with High Death Rates
+In calendar order, show when a country had at least 300 deaths per million population. (Or at least one death per 3333 people.)
+
+```
 SELECT [Location], [Year], [MonthName], round([MonthlyNewDeathsPerMillion], 0) AS [DeathsPerMillionPeople]
 FROM #monthly_deaths
 WHERE [MonthlyNewDeathsPerMillion] >= 300
@@ -1677,9 +1722,10 @@ ORDER BY [Year], [MonthNum], [Location];
 |Montserrat                      |2022|June     |402                   |
 
 
+### Months with High Death Rates: Large Countries
+In calendar order, show when a country had at least 200 deaths per million population. (Or at least one death per 5000 people.), for countries with more than ten million people. Note that the threshold used here is lower than when smaller countries where included.
+
 ```
--- As above, for countries with more than ten million people.
--- In this case the threshold is 200 deaths per million population. (Or at least one death per 5000 people.)
 SELECT [Location], [Year], [MonthName], round([MonthlyNewDeathsPerMillion], 0) AS [DeathsPerMillionPeople]
 FROM #monthly_deaths
 WHERE ([MonthlyNewDeathsPerMillion] >= 200) AND ([MonthlyPopulation] > 10000000)
@@ -1789,7 +1835,10 @@ ORDER BY [Year], [MonthNum], [Location];
 |Greece        |2022|February |228                   |
 
 ```
--- Top 50 countries in terms of total deaths vs population
+
+### Top 50 countries in terms of total deaths vs population
+
+```
 SELECT TOP(50) [location], round(sum([MonthlyNewDeathsPerMillion]), 0) AS [TotalDeathsPerMillionPop]
 FROM #monthly_deaths
 GROUP BY [location]
@@ -1851,7 +1900,11 @@ ORDER BY sum([MonthlyNewDeathsPerMillion]) DESC;
 |Andorra               |2004                    |
 
 ```
--- As above, for countries with ten million people or more
+
+### Top 50 large countries in terms of total deaths vs population
+As above, for countries with ten million people or more.
+
+```
 SELECT TOP(50) [location], round(sum([MonthlyNewDeathsPerMillion]), 0) AS [TotalDeathsPerMillionPop]
 FROM #monthly_deaths
 WHERE [MonthlyPopulation] >= 10000000
