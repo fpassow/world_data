@@ -1,4 +1,4 @@
-# Explore Covid Data with Only SQL
+# Explore Covid Data with SQL
 
 ## Data and Setup
 
@@ -19,8 +19,9 @@ Here is the downloaded data [owid-covid-data.csv](https://fpassow.github.io/worl
  and my script for updating it in SQL Server [](https://fpassow.github.io/world_data/owid_covid/reload_from_csv.sql)
 
 ## Exploration
+Visualizations are great. But let's see what we can do with just SQL queries.
 
-Let's look for interesting things happening in a country in a specific month. I'll copy the queries here, but the actual code is 
+We will look for interesting things happening in a country in a specific month. The queries are in-line here. And the actual code is at
 [here](https://fpassow.github.io/world_data/owid_covid/queries.csv)
 
 ```
@@ -45,6 +46,20 @@ FROM [world_data].[dbo].[owid_covid]
 WHERE [continent] IS NOT NULL   -- Eliminates non-countries like "Asia" or "High income"
 GROUP BY [location], year([date]), month([date]), datename(month, [date]);
 ```
+
+```
+-- "Biggest Outbreaks"
+-- Top 50 reported numbers of new cases for a country in one month, relative to population,
+SELECT TOP(50) 
+  [Location] AS [Country],
+  [Year],
+  [MonthName],
+  round([MonthlyNewCasesPerThousand],0) AS [NewCasesPer1000Pop],
+  round(1000/[MonthlyNewCasesPerThousand], 2) AS [One_in_X_people_was_known_to_get_Covid]
+FROM #monthly_cases
+ORDER BY [MonthlyNewCasesPerThousand] DESC;
+```
+
 |Country                        |Year|MonthName|NewCasesPer1000Pop|One_in_X_people_was_known_to_get_Covid|
 |-------------------------------|----|---------|------------------|--------------------------------------|
 |Falkland Islands               |2022|May      |428               |2.34                                  |
@@ -97,19 +112,6 @@ GROUP BY [location], year([date]), month([date]), datename(month, [date]);
 |Slovenia                       |2022|February |87                |11.43                                 |
 |Netherlands                    |2022|March    |87                |11.47                                 |
 |Andorra                        |2021|December |86                |11.68                                 |
-
-
-
--- "Biggest Outbreaks"
--- Top 50 reported numbers of new cases for a country in one month, relative to population,
-SELECT TOP(50) 
-  [Location] AS [Country],
-  [Year],
-  [MonthName],
-  round([MonthlyNewCasesPerThousand],0) AS [NewCasesPer1000Pop],
-  round(1000/[MonthlyNewCasesPerThousand], 2) AS [One_in_X_people_was_known_to_get_Covid]
-FROM #monthly_cases
-ORDER BY [MonthlyNewCasesPerThousand] DESC;
 
 
 -- Top 100 as above, but only for countries with at least ten million people
