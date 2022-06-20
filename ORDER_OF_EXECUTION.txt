@@ -1,0 +1,12 @@
+Learn SQL order of execution by getting it wrong.
+
+The good news, the order of execution mostly matches their order in your code.
+But unfortunately, SELECT is totally out of place. And it was a long time before I realized that the the order of the rest made sense.
+
+FROM, JOIN, ON
+WHERE
+GROUP BY
+HAVING
+SELECT, DISTINCT
+ORDER BY
+LIMIT

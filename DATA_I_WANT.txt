@@ -1,0 +1,13 @@
+Year
+Country
+Population
+Any measure of age distribution
+Life expectancy
+GDP
+Personal income info
+Temperature. Rainfall. Wind!!!
+Languages
+Internet use
+
+Info by cities would be very cool. Comparing Singapore to New York or L.A. to Mumbai might be more interesting than comparing only countries.
+
