@@ -16,13 +16,15 @@ curl https://covid.ourworldindata.org/data/owid-covid-data.csv > owid-covid-data
 I'm using SQL Server Management Studio.
 
 Here is the downloaded data [owid-covid-data.csv](https://fpassow.github.io/world_data/owid_covid/owid-covid-data.csv)
- and my script for updating it in SQL Server [](https://fpassow.github.io/world_data/owid_covid/reload_from_csv.sql)
+ and my [script for loading it into SQL Server](https://fpassow.github.io/world_data/owid_covid/reload_from_csv.sql)
+
+Or you can see all of the scripts and files in [this github repo](https://github.com/fpassow/world_data/tree/main/owid_covid)
 
 ## Exploration
 Visualizations are great. But let's see what we can do with just SQL queries.
 
-We will look for interesting things happening in a country in a specific month. The queries are in-line here. And the actual code is at
-[here](https://fpassow.github.io/world_data/owid_covid/queries.csv)
+We will look for interesting things happening in a country in a specific month. The queries are in-line here. And the actual code is
+[here](https://fpassow.github.io/world_data/owid_covid/queries.sql)
 
 ```
 USE [world_data]
