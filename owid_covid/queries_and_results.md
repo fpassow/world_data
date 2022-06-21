@@ -792,7 +792,7 @@ ORDER BY [Country], [Year],[MonthNum], [MonthlyNewCasesPerThousand] DESC;
 |Vietnam           |2022|March    |62                |16.04                                 |
 |Vietnam           |2022|April    |11                |90.46                                 |
 
-### Countries with the Most "Hight Covid" Months
+### Countries with the Most "High Covid" Months
 Find countries with the most months during which more than 10 new cases were reported per thousand people
 
 ```
@@ -866,7 +866,7 @@ ORDER BY [Months] DESC, [Location];
 |Palestine                      |6     |
 |Spain                          |6     |
 
-### Large Countries with the Most "Hight Covid" Months
+### Large Countries with the Most "High Covid" Months
 Find countries with the most months during which more than 10 new cases were reported per thousand people
 , for populations of at least ten million.
 
@@ -1476,7 +1476,7 @@ WHERE [continent] IS NOT NULL   -- Eliminates non-countries like "Asia" or "High
 GROUP BY [location], year([date]), month([date]), datename(month, [date]);
 ```
 
-### Largest Numbers of Deaths, vs Population
+### Countries with Largest Numbers of Deaths in a Month, vs Population
 What were the largest number of covid deaths in one month and one country, relative to population?
 
 ```
@@ -1703,7 +1703,7 @@ ORDER BY [Year], [MonthNum], [Location];
 |Montserrat                      |2022|June     |402                   |
 
 
-### Months with High Death Rates: Large Countries
+### Months with High Death Rates in Large Countries
 In calendar order, show when a country had at least 200 deaths per million population. (Or at least one death per 5000 people.), for countries with more than ten million people. Note that the threshold used here is lower than when smaller countries where included.
 
 ```
