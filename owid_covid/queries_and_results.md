@@ -233,13 +233,10 @@ ORDER BY [MonthlyNewCasesPerThousand] DESC;
 |Ukraine       |2022|February |18                |55.35                                 |
 |Japan         |2022|February |18                |55.59                                 |
 
-```
-
 ### Outbreaks Over Time
 Next, we look at months in calendar order, noting countries and months where at least fifty people in every thousand 
 were reported as getting Covid during that month.
 ```
-
 SELECT
   [Location] AS [Country],
   [Year],
@@ -381,8 +378,6 @@ ORDER BY [Year],[MonthNum], [MonthlyNewCasesPerThousand] DESC;
 |Taiwan                         |2022|May      |80                |12.44                                 |
 |Portugal                       |2022|May      |64                |15.52                                 |
 |Australia                      |2022|May      |53                |18.97                                 |
-
-```
 
 ### Outbreaks Over Time: Large Countries
 Months in calendar order, noting countries and months where at least fifty people in every thousand 
@@ -591,8 +586,6 @@ ORDER BY [Year],[MonthNum], [MonthlyNewCasesPerThousand] DESC;
 |Portugal          |2022|June     |23                |43.43                                 |
 |Australia         |2022|June     |14                |74.03                                 |
 
-```
-
 ### Outbreaks Over Time: Large Countries: Grouped by Country
 Same as above, but group the rows for each country together.
 
@@ -799,7 +792,6 @@ ORDER BY [Country], [Year],[MonthNum], [MonthlyNewCasesPerThousand] DESC;
 |Vietnam           |2022|March    |62                |16.04                                 |
 |Vietnam           |2022|April    |11                |90.46                                 |
 
-
 ### Countries with the Most "Hight Covid" Months
 Find countries with the most months during which more than 10 new cases were reported per thousand people
 
@@ -873,8 +865,6 @@ ORDER BY [Months] DESC, [Location];
 |North Macedonia                |6     |
 |Palestine                      |6     |
 |Spain                          |6     |
-
-```
 
 ### Large Countries with the Most "Hight Covid" Months
 Find countries with the most months during which more than 10 new cases were reported per thousand people
@@ -991,8 +981,6 @@ ORDER BY [MonthlyNewVacPerThousand] DESC;
 |Aruba             |2021|April    |303             |
 |Cuba              |2022|January  |303             |
 |Germany           |2021|June     |302             |
-
-```
 
 ### Vaccination Drives Over Time
 In calendar order, display all countries+months with at least one person in every five getting a vaccination during that month.
@@ -1337,8 +1325,6 @@ ORDER BY [Year], [MonthNum], [Location];
 |Japan             |2022|March    |212                  |
 |Chile             |2022|May      |208                  |
 
-```
-
 ### Most Heavily Vaccinated Countries
 Top 50 countries by average vaccinations per person over all time, 
 rounded to 3 decimal places, for countries where data is available.
@@ -1403,8 +1389,6 @@ ORDER BY sum([MonthlyNewVacPerThousand]) DESC;
 |Vietnam             |1.384               |
 |Spain               |1.347               |
 |India               |1.343               |
-
-```
 
 ### Most Heavily Vaccinated Large Countries
 Top 50 countries by average vaccinations per person over all time, 
@@ -1492,7 +1476,6 @@ WHERE [continent] IS NOT NULL   -- Eliminates non-countries like "Asia" or "High
 GROUP BY [location], year([date]), month([date]), datename(month, [date]);
 ```
 
-
 ### Largest Numbers of Deaths, vs Population
 What were the largest number of covid deaths in one month and one country, relative to population?
 
@@ -1558,8 +1541,6 @@ ORDER BY [MonthlyNewDeathsPerMillion] DESC;
 |Bosnia and Herzegovina|2021|March    |468                   |
 |Slovakia              |2021|February |467                   |
 |Bermuda               |2021|October  |467                   |
-
-```
 
 ### Months with High Death Rates
 In calendar order, show when a country had at least 300 deaths per million population. (Or at least one death per 3333 people.)
@@ -1834,8 +1815,6 @@ ORDER BY [Year], [MonthNum], [Location];
 |Poland        |2022|January  |215                   |
 |Greece        |2022|February |228                   |
 
-```
-
 ### Top 50 countries in terms of total deaths vs population
 
 ```
@@ -1898,8 +1877,6 @@ ORDER BY sum([MonthlyNewDeathsPerMillion]) DESC;
 |Grenada               |2044                    |
 |Saint Lucia           |2039                    |
 |Andorra               |2004                    |
-
-```
 
 ### Top 50 large countries in terms of total deaths vs population
 As above, for countries with ten million people or more.
