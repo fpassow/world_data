@@ -1,0 +1,4 @@
+Docs on creating SQL Server "non xml format files" for data import
+https://docs.microsoft.com/en-us/sql/relational-databases/import-export/non-xml-format-files-sql-server?view=sql-server-ver16
+https://docs.microsoft.com/en-us/sql/relational-databases/import-export/specify-file-storage-type-by-using-bcp-sql-server?view=sql-server-ver16
+
