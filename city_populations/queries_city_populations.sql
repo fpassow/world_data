@@ -1,4 +1,4 @@
--- Which countries have data for 2020 or after
+-- Which countries have data for 2020 or after?
 SELECT DISTINCT CountryOrArea
 FROM [world_data].[dbo].[city_population]
 WHERE Year >= 2020 AND Sex = 'Both Sexes'
@@ -19,8 +19,8 @@ SELECT CountryOrArea, City, Year, Value
 FROM numbered_cte
 WHERE RowNumber = 1
 
--- Move the logic for looking at only the latest year into a CTE
--- Add another CTE to number the rows according to population of cities within their country
+-- Move the logic for getting the most recent population number for each city into a CTE.
+-- Add another CTE to number the rows according to population of cities within their country.
 -- And select each country's most populous city.
 WITH year_number_cte AS (
     SELECT CountryOrArea, City, Year, Value, 
@@ -43,9 +43,7 @@ FROM pop_number_cte
 WHERE PopRowNumber = 1
 
 
-
--- That's enough complexity. 
--- Let's make a temp table of the most populous city in each country, based on latest available data
+-- Make a temp table of the most populous city in each country, based on latest available data
 DROP TABLE IF EXISTS #city_populations_nocodes;
 WITH year_number_cte AS (
     SELECT CountryOrArea, City, Year, Value, 
@@ -71,8 +69,8 @@ WHERE PopRowNumber = 1
 -- Check our temp table
 SELECT * FROM #city_populations_nocodes;
 
--- Make another temp table, this time with country codes,
--- Use our table mapping country names to ISO codes
+-- Make another temp table, this time with ISO three-letter country codes.
+-- We will use our table mapping country names to ISO codes
 DROP TABLE IF EXISTS #city_populations;
 SELECT city_pops.CountryOrArea, City, Value AS CityPop, ISOalpha3
 INTO #city_populations
@@ -85,7 +83,7 @@ SELECT * FROM #city_populations;
 
 
 
--- NOW WE CAN ADD POPULATIONS OF COUNTRIES' LARGEST CITIES TO SOME OF OUR COVID RESULTS
+-- NOW WE CAN ADD THE POPULATION OF EACH COUNTRIES' LARGEST CITIES TO SOME OF OUR COVID RESULTS
 
 -- Create a temp table with number of reported new cases vs population
 --  monthly per country.
@@ -106,9 +104,9 @@ GROUP BY [location], [iso_code], year([date]), month([date]), datename(month, [d
 
 
 -- Find countries with the most months during which more than 10 new cases were reported per thousand people
--- and make it a CTE
--- then JOIN with the city population data above, using the ISO country codes
--- and display in descending order of city population
+-- and make it a CTE.
+-- Then JOIN with the city population data above, joining on the ISO country codes.
+-- And display in descending order of city population
 WITH covid_months_cte AS (
 SELECT [Location], iso_code, count(*) as [Months]
 FROM #monthly_cases
@@ -130,6 +128,6 @@ ORDER BY CityPopulation DESC
 -- However, the source of the covid data mentions that numbers are for *reported* cases,
 -- which is influenced by the fraction of actual covid cases identified by a countries medical system.
 -- TODO: Look at population of largest city vs percentage of positive tests
-          or adjust cases by a countries "testing rate" (tests/population).
+--          or adjust cases by a countries "testing rate" (tests/population).
 
 

@@ -1,3 +1,5 @@
+The Goal: Create a mapping of common English names for countries to ISO 3166-1 alpha-3 codes.
+
 TODO: Parse export.csv downloaded from:
    https://www.cia.gov/the-world-factbook/references/country-data-codes/
    This one includes the most codes and is freely downloadable as a (complex) csv
@@ -6,10 +8,7 @@ Easy(?) path for today is to copy-paste from here:
   https://unstats.un.org/unsd/methodology/m49/
 into country_codes_from_unstats.xlsx
 and export as tab-delimited country_codes_from_unstats.txt
-  (Because three rows have a double quoted string containing a comma
-   in the CountryOrArea column, like:
-     "Bonaire, Sint Eustatius and Saba",535,BES
-  )
+(Tab-delimited because one column has values with comma's.)
 
 
 

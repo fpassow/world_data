@@ -4,8 +4,8 @@ Last downloaded June 23, 2022
 The downloaded file is zipped and has a date in the name. So the name will probably change.
 It has footnotes at the bottom.
 And the Reliability column is quoted and contains commas.
-Therefore, we open in Excel and manually remove the footnotes 
-and save the result as tab separated value
+Therefore, we open in Excel, manually remove the footnotes 
+and save the result as tab-separated values
 in world_data\city_populations\import_me.txt
 
 COLUMNS:

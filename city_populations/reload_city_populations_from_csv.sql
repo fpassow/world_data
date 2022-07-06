@@ -1,5 +1,5 @@
--- Import the csv into a table of strings.
--- So it can be examined, converted, and cleaned using the power of SQL if needed.
+-- Import the csv into a table of strings
+-- so it can be examined, converted, and cleaned using the power of SQL.
 DROP TABLE IF EXISTS [world_data].[dbo].[city_population_raw];
 CREATE TABLE [world_data].[dbo].[city_population_raw] (
 	[CountryOrArea] [nvarchar](100) NULL,
@@ -24,7 +24,7 @@ WITH
 );
 
 -- Check the data
-select * from [world_data].[dbo].[city_population_raw]
+SELECT * FROM [world_data].[dbo].[city_population_raw]
 
 -- Create a table with the types we ultimately want
 DROP TABLE IF EXISTS [world_data].[dbo].[city_population_nocode];
@@ -40,12 +40,10 @@ CREATE TABLE [world_data].[dbo].[city_population_nocode] (
 	[Source Year] int NULL,
 	[Value] float NULL,
 	[ValueFootnotes] [nvarchar](100)  NULL,
-	
 );
 
-
 -- Convert strings into the expected types and insert into final table
--- Fields were all double-quoted in raw file. Strip quotes.
+-- Strip quotes where needed.
 INSERT INTO [world_data].[dbo].[city_population_nocode]
 SELECT
 	trim('"' FROM [CountryOrArea]),
@@ -61,14 +59,8 @@ SELECT
 	[ValueFootnotes]
 FROM  [world_data].[dbo].[city_population_raw];
 
-
 -- Check
-select * from [world_data].[dbo].[city_population_nocode];
+SELECT * FROM [world_data].[dbo].[city_population_nocode];
 
 
-
-
-
-
-[country_code] CHAR(3)   -- NOT IN RAW DATA. WILL BE ASSIGNED LATER.
 
