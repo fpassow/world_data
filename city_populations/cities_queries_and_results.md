@@ -33,13 +33,13 @@ FROM [world_data].[dbo].[city_population]
 WHERE Year >= 2020 AND Sex = 'Both Sexes'
 ```
 
-Try 2018... Still not enough countries
+Try 2018.
 ```
 SELECT DISTINCT count(DISTINCT CountryOrArea)
 FROM [world_data].[dbo].[city_population]
 WHERE Year >= 2018 AND Sex = 'Both Sexes'
 ```
-
+Still not enough countries.
 Let's just get the most recent population number for each city.
 ```
 WITH numbered_cte AS (
@@ -84,7 +84,8 @@ SELECT * FROM #city_populations_nocodes;
 ```
 
 Make another temp table, this time with ISO three-letter country codes.
-We will use our table mapping country names to ISO codes
+We will use our table mapping country names to ISO codes, which was 
+[created with this data and code](https://github.com/fpassow/world_data/tree/main/country_codes).
 ```
 DROP TABLE IF EXISTS #city_populations;
 SELECT city_pops.CountryOrArea, City, Value AS CityPop, ISOalpha3
@@ -97,7 +98,7 @@ ON city_pops.CountryOrArea = codes.CountryOrArea;
 SELECT * FROM #city_populations;
 ```
 
-## Combine Population Data with Codid Data
+## Combine Population Data with Covid Data
 
 Create a temp table with number of reported new cases vs population
 monthly per country.

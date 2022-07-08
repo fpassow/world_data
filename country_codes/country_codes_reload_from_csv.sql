@@ -55,13 +55,6 @@ VALUES ('China, Hong Kong SAR', 344, 'HKG', 0);
 INSERT [world_data].[dbo].[country_codes] (CountryOrArea, M49code, ISOalpha3, isStandardName) 
 VALUES ('China, Macao SAR', 446, 'MAC', 0);
 
-	
-
-
-
-
 
 -- Check our final data
-select * from [world_data].[dbo].[country_codes];
-
-
+SELECT * FROM [world_data].[dbo].[country_codes];
