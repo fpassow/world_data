@@ -1,10 +1,15 @@
--- Which countries have data for 2020 or after?
-SELECT DISTINCT CountryOrArea
+-- How many countries do we have data for?
+SELECT count(DISTINCT CountryOrArea)
+FROM [world_data].[dbo].[city_population]
+WHERE Sex = 'Both Sexes'
+
+-- How many countries have data for 2020 or after?
+SELECT count(DISTINCT CountryOrArea)
 FROM [world_data].[dbo].[city_population]
 WHERE Year >= 2020 AND Sex = 'Both Sexes'
 
 -- Try 2018... Still not enough countries
-SELECT DISTINCT CountryOrArea
+SELECT DISTINCT count(DISTINCT CountryOrArea)
 FROM [world_data].[dbo].[city_population]
 WHERE Year >= 2018 AND Sex = 'Both Sexes'
 
