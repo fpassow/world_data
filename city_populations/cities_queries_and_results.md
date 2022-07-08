@@ -53,30 +53,7 @@ FROM numbered_cte
 WHERE RowNumber = 1
 ```
 
-Move the logic for getting the most recent population number for each city into a CTE.
-Add another CTE to number the rows according to population of cities within their country.
-And select each country's most populous city.
-```
-WITH year_number_cte AS (
-    SELECT CountryOrArea, City, Year, Value, 
-        row_number() OVER (PARTITION BY CountryOrArea, City ORDER BY Year DESC) AS YearRowNumber
-    FROM [world_data].[dbo].[city_population]
-	WHERE Sex = 'Both Sexes'
-),
-latest_year_cte AS (
-    SELECT CountryOrArea, City, Year, Value
-    FROM year_number_cte
-    WHERE YearRowNumber = 1
-),
-pop_number_cte AS (
-    SELECT CountryOrArea, City, Value, 
-        row_number() OVER (PARTITION BY CountryOrArea ORDER BY Value DESC) AS PopRowNumber
-	FROM latest_year_cte
-)
-SELECT CountryOrArea, City, Value
-FROM pop_number_cte
-WHERE PopRowNumber = 1
-```
+## Data About Each Country's Most Populous City.
 
 Make a temp table of the most populous city in each country, based on latest available data
 ```
@@ -120,8 +97,7 @@ ON city_pops.CountryOrArea = codes.CountryOrArea;
 SELECT * FROM #city_populations;
 ```
 
-
-## NOW WE CAN ADD THE POPULATION OF EACH COUNTRIES' LARGEST CITIES TO SOME OF OUR COVID RESULTS
+## Combine Population Data with Codid Data
 
 Create a temp table with number of reported new cases vs population
 monthly per country.
