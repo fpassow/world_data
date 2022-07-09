@@ -1,14 +1,23 @@
 The Goal: Create a mapping of common English names for countries to ISO 3166-1 alpha-3 codes.
 
-TODO: Parse export.csv downloaded from:
-   https://www.cia.gov/the-world-factbook/references/country-data-codes/
-   This one includes the most codes and is freely downloadable as a (complex) csv
+Start with a table from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
 
-Easy(?) path for today is to copy-paste from here:
-  https://unstats.un.org/unsd/methodology/m49/
-into country_codes_from_unstats.xlsx
-and export as tab-delimited country_codes_from_unstats.txt
-(Tab-delimited because one column has values with comma's.)
+Copy the list labeled: "The following is a complete list of the current officially assigned ISO 3166-1 alpha-3 codes,[4] using a title case version of the English short names officially defined by the ISO 3166 Maintenance Agency (ISO 3166/MA):"
+
+Paste into Notepadd++ on Windows.
+The format is character code then two space then country name then \r\n
+Find and replace "  " with \t
+Find and replace \r\n with \n
+Save as raw.txt
+
+Then import using SQL Server Management Studio and country_codes_reload_from_csv.sql
+
+
+
+
+
+
+
 
 
 

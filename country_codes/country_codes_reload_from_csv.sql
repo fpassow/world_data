@@ -1,33 +1,27 @@
--- Import the csv into a table of strings
+﻿-- Import the csv into a table of strings
 -- so it can be examined, converted, and cleaned using the power of SQL.
 DROP TABLE IF EXISTS [world_data].[dbo].[country_codes_raw];
 CREATE TABLE [world_data].[dbo].[country_codes_raw] (
-    CountryOrArea nvarchar(100) NULL,
-	M49code nvarchar(100) NULL,
-	ISOalpha3 nvarchar(100) NULL
+    ISOalpha3 nvarchar(100) NULL,
+	CountryOrArea nvarchar(100) NULL
 );
 BULK INSERT [world_data].[dbo].[country_codes_raw]
-FROM 'C:\github\world_data\country_codes\country_codes_from_unstats.txt'  -- <<<<< YOU WILL HAVE TO CHANGE THIS PATH <<<<<
+FROM 'C:\github\world_data\country_codes\raw.txt'  -- <<<<< YOU WILL HAVE TO CHANGE THIS PATH <<<<<
 WITH
 (
 		ROWTERMINATOR = '0x0a',  
 		FIELDTERMINATOR = '\t', -- Exported from excel as tab delimited because the Reliability column has commas.
-        FIRSTROW=2
+        FIRSTROW=1
 );
-
--- Check the data
-SELECT * FROM [world_data].[dbo].[country_codes_raw]
-
 
 -- Create a table with the types we ultimately want
 DROP TABLE IF EXISTS [world_data].[dbo].[country_codes];
 CREATE TABLE [world_data].[dbo].[country_codes] (
-    CountryOrArea nvarchar(100) NULL,
-	M49code int NULL,
-	ISOalpha3 char(3) NULL,
-	isStandardName bit NULL  -- 1 if this is the name to use when converting country codes back to names.
+    ISOalpha3 char(3) NULL,
+	CountryOrArea nvarchar(100) NULL,
+	isPrimaryName bit NULL  -- 1 if this is the name to use when converting country codes back to names. 
+	                      -- Zero for all alternate forms of the name.
 );
-
 
 -- Convert strings into the expected types and insert into the final table.
 -- Some rows have a double quoted string containing a comma in the CountryOrArea column, like:
@@ -37,24 +31,67 @@ CREATE TABLE [world_data].[dbo].[country_codes] (
 --   The easy solution is to just take the first 3 characters.
 INSERT INTO [world_data].[dbo].[country_codes]
 SELECT
-	trim('" ' FROM CountryOrArea),
-	convert(int, M49code),
-	left(ISOalpha3, 3) ,
+	ISOalpha3,
+	CountryOrArea,
 	1
 FROM  [world_data].[dbo].[country_codes_raw];
 
-
 -- Now add alternate forms of a country's English language name.
--- Since these are "alternate" names, we set isStandardName to zero.
+-- Since these are "alternate" names, we set isPrimaryName to zero.
 
--- China, Hong Kong SAR   should be  344 HKG
-INSERT [world_data].[dbo].[country_codes] (CountryOrArea, M49code, ISOalpha3, isStandardName) 
-VALUES ('China, Hong Kong SAR', 344, 'HKG', 0);
+-- British Virgin Islands
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('VGB', 'British Virgin Islands', 0);
 
--- China, Macao SAR       should be  446 MAC
-INSERT [world_data].[dbo].[country_codes] (CountryOrArea, M49code, ISOalpha3, isStandardName) 
-VALUES ('China, Macao SAR', 446, 'MAC', 0);
+-- China, Hong Kong SAR
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('HKG', 'China, Hong Kong SAR', 0);
+
+-- China, Macao SAR
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('MAC', 'China, Macao SAR', 0);
+
+-- Democratic People's Republic of Korea
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('PRK', 'Democratic People''s Republic of Korea', 0);
+
+-- Republic of Korea
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('KOR', 'Republic of Korea', 0);
+
+-- Republic of Moldova
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('MDA', 'Republic of Moldova', 0);
+
+-- Republic of South Sudan
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('SSD', 'Republic of South Sudan', 0);
+
+-- Reunion
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('REU', 'Reunion', 0);
+
+-- Saint Helena ex. dep.
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('SHN', 'Saint Helena ex. dep.', 0);
+
+-- State of Palestine
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('PSE', 'State of Palestine', 0);
+
+-- United Republic of Tanzania
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('TZA', 'United Republic of Tanzania', 0);
+
+-- United States Virgin Islands
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('VIR', 'United States Virgin Islands', 0);
+
+-- Wallis and Futuna Islands
+INSERT [world_data].[dbo].[country_codes] (ISOalpha3, CountryOrArea, isPrimaryName) 
+VALUES ('VGB', 'Wallis and Futuna Islands', 0);
 
 
--- Check our final data
-SELECT * FROM [world_data].[dbo].[country_codes];
+-- Check the final table
+SELECT * FROM [world_data].[dbo].[country_codes]
+

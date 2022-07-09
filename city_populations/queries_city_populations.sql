@@ -23,6 +23,7 @@ WITH numbered_cte AS (
 SELECT CountryOrArea, City, Year, Value
 FROM numbered_cte
 WHERE RowNumber = 1
+ORDER BY Value DESC
 
 -- Move the logic for getting the most recent population number for each city into a CTE.
 -- Add another CTE to number the rows according to population of cities within their country.
@@ -75,7 +76,7 @@ WHERE PopRowNumber = 1
 SELECT * FROM #city_populations_nocodes;
 
 -- Make another temp table, this time with ISO three-letter country codes.
--- We will use our table mapping country names to ISO codes
+-- We will use the mapping of country names to ISO codes which I created here https://github.com/fpassow/world_data/tree/main/country_codes
 DROP TABLE IF EXISTS #city_populations;
 SELECT city_pops.CountryOrArea, City, Value AS CityPop, ISOalpha3
 INTO #city_populations
